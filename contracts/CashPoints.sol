@@ -10,22 +10,19 @@ struct CashPoint {
     uint _phoneNumber;
     uint rate; //local currency to usd rate
     uint endtime; //when time as cashpoint will expire
-    bool isCashPoint;    
+    bool isCashPoint;
 }
 
 mapping (address=>CashPoint) cashpoints;
 event CreatedCashPoint(address cashpoint, string name, int lat, int long, uint rate, uint endtime);
 
 function addCashPoint(string memory name, int mylat, int mylong, uint phone, uint rate, uint duration) public{
-   
     if(block.timestamp >= cashpoints[msg.sender].endtime)
     {
         delete cashpoints[msg.sender];
         Count--;
     }
-    
     require(!cashpoints[msg.sender].isCashPoint);
-  
     uint endtime = block.timestamp + duration * 1 days;
     bool isCashPoint = true;
 
